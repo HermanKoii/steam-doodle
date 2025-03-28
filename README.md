@@ -1,37 +1,148 @@
-# Koii Task - Steam Daily Special
+# Backend API Service
 
-This task scrape steam daily Top 40 special games and submit the specials list to IPFS and the cid of the specials is submitted to K2.
-## Requirements
+## Project Overview
 
-- [Node >=16.0.0](https://nodejs.org)
+This is a Node.js backend service built with Express.js, designed to provide a flexible and scalable API for blockchain and web3 interactions. The service supports various tasks related to blockchain submissions, auditing, and data distribution.
 
-## What's in the task?
+### Key Features
+- Web3 blockchain interactions
+- Task-based system for data submissions
+- Decentralized storage integration
+- Automated task scheduling
+- Robust error handling and logging
 
-The task functions are in task folder. It contains the following files:
+## Getting Started
 
-- `special_task.js` - This is the main task file. It contains the code for scraping the special games and submitting it to IPFS.
-- `special_submit.js` - This file contains the code that use cid of steam special games generate the signatuer, then create a new node_proof, upload to IPFS and use proof_cid as the submission value. The submission gonna be submitted to K2.
-- `special_audit.js` - This file contains function that check if signature is true and avaliable of special. Next return the value of vote.
-- `db.js` - This file contains the code for connecting to the database.
-- It also include GET endpoint `/getSpecialList` to get the list of specials submitted to K2.
+### Prerequisites
+- Node.js (v16+ recommended)
+- Yarn or npm package manager
+- Web3 wallet (for blockchain interactions)
 
-## How to run the task?
+### Installation
 
-- Download desktop node from [here](https://www.koii.network/node?promo=F973BD738033). 
-- Run the steam special task from the desktop node.
+1. Clone the repository:
+```bash
+git clone https://github.com/your-org/js_app_deploy.git
+cd js_app_deploy
+```
 
-## How to run the task locally?
+2. Install dependencies:
+```bash
+yarn install
+# or
+npm install
+```
 
-To run and test this task locally:
-- Clone this repository.
-- Run `yarn install` to install all the dependencies.
-- Run `yarn test` to start the task.
+3. Configure environment variables:
+Create a `.env` file based on `.env-local` and fill in required credentials:
+```bash
+cp .env-local .env
+# Edit .env with your specific configuration
+```
 
-## What's the reward distribution rule?
+4. Start the development server:
+```bash
+yarn start
+# or
+npm start
+```
 
-Bounty will be distributed to people who submit the daily specials games to IPFS and the cid of the special is submitted to K2. The bounty per round is 1 KOII.
+## API Endpoints
 
-## How to submit the specials to IPFS?
+### Task Management
 
-When you run the task, desktop node will ask you insert your web3.storage key. Check the tutorial [here](https://blog.koii.network/Introduce-web3-storage/)
+#### `/task/submit`
+- **Method**: POST
+- **Description**: Submit a new task to the blockchain
+- **Authentication**: Required (API key)
+- **Request Body**:
+```json
+{
+  "taskData": { ... },
+  "signature": "blockchain_signature"
+}
+```
+- **Response**:
+```json
+{
+  "success": true,
+  "taskId": "unique_task_identifier"
+}
+```
 
+#### `/task/audit`
+- **Method**: GET
+- **Description**: Retrieve audit information for tasks
+- **Authentication**: API key required
+- **Query Parameters**:
+  - `taskId`: Specific task to audit
+  - `status`: Filter by task status
+
+### Authentication
+
+Authentication is managed through API keys and blockchain signatures. Ensure you:
+- Include `X-API-Key` header in requests
+- Sign payloads with your web3 wallet
+- Maintain secure key management practices
+
+## Project Structure
+
+```
+js_app_deploy/
+├── config-task-example.yml      # Task configuration template
+├── index.js                     # Main application entry point
+├── task/                        # Task-specific modules
+│   ├── submission.js
+│   ├── audit.js
+│   └── distribution.js
+├── helpers/                     # Utility functions
+│   └── dataFromCid.js
+└── tests/                       # Unit and integration tests
+```
+
+## Technologies Used
+
+- **Backend**: Node.js, Express.js
+- **Blockchain**: Web3.js
+- **Database**: NeDB (embedded database)
+- **Testing**: Jest
+- **Build**: Webpack
+- **Storage**: Web3 Storage
+
+## Deployment
+
+### Docker Deployment
+```bash
+docker build -t js_app_deploy .
+docker run -p 3000:3000 js_app_deploy
+```
+
+### Environment Considerations
+- Use environment-specific configurations
+- Implement proper secret management
+- Configure appropriate CORS and security headers
+
+## Testing
+
+Run test suite:
+```bash
+yarn test
+# or
+npm test
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+Distributed under the ISC License. See `LICENSE` file for more information.
+
+## Contact
+
+Project Link: [https://github.com/your-org/js_app_deploy](https://github.com/your-org/js_app_deploy)
